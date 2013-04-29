@@ -1,4 +1,5 @@
 exports.cat = cat
+exports.and = cat
 exports.end = end
 exports.or  = or
 exports.union = or
@@ -78,6 +79,7 @@ function or () {
     })()
   }
 }
+
 //match star 0 or more times.
 //read, until the matcher doesn't match
 //don't consume the unmatching 
@@ -95,6 +97,19 @@ function star (matcher) {
   }
 }
 
+//match one or more things.
 function plus(matcher) {
   return cat(matcher, star(matcher))
+}
+
+//match nothing!
+function empty () {
+  return function (read, done) {
+    done()
+  }
+}
+
+//match something or nothing
+function maybe(matcher) {
+  return union(matcher, empty())
 }
