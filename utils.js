@@ -1,15 +1,12 @@
 var pull = require('pull-stream')
 
 exports.markable = pull.Through(markable)
-exports.buffer = buffer
+//exports.buffer = buffer
 
 function markable(read) {
   var seen = [], marked = false, head = 0, ended
 
   function readable (abort, cb) {
-    console.log('read--', abort, cb)
-    if(abort === 'a')
-      throw new Error('amort?')
     if(abort)
       return read(abort, cb)
 
@@ -19,9 +16,6 @@ function markable(read) {
       return cb(ended)
     else
       read(null, function (end, data) {
-        if(end == 'a')
-          throw new Error('wty?')
-        console.log('READ', end, data)
         if(!marked) return cb(end, data)
         if(end)
           ended = ended || end
@@ -39,14 +33,13 @@ function markable(read) {
     //to return the stream to a given start point.
     marked = true
     return function revert () {
-      console.log('REVERT', head, 'TO', mark)
       head = mark
     }
   }
 
   return readable
 }
-
+/*
 function buffer (read) {
   var ary = [], ended = false
   var inflight = false
@@ -78,4 +71,4 @@ function buffer (read) {
     return read
   }
 }
-
+*/

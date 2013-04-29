@@ -12,13 +12,9 @@ markable = u.markable
 
 function match (matcher, read, done) {
   if('function' === typeof matcher) {
-    console.error('pull again', matcher)
     matcher(read, done)
   } else {
-//    console.error('mATCh', matcher)
     read(null, function (err, data) {
-      console.log(">", err, data)
-      if(err == 'a') throw new Error('wtf')
       if(err) done(err)
       else if(data === matcher) done(null)
       else
@@ -42,12 +38,10 @@ function cat () {
   return function (read, done) {
     var i = 0
     ;(function next () {
-      console.log(i, args.length)
       if(i >= args.length)
         return done() //matched
 
       match(args[i++], read, function (err) {
-        console.log(err, i)
         if(err) done(err)
         else next()
       })
@@ -58,9 +52,7 @@ function cat () {
 
 function end () {
   return function (read, done) {
-    console.log('END?')
     read(null, function (err, data) {
-      console.log('END', err, data)
       if(err) done()
       else done({error: "did not end", found: data})
     })
@@ -71,7 +63,6 @@ function end () {
 function or () {
   var args = [].slice.call(arguments)
   return function (read, done) {
-  //  read = markable()(read)
     var revert = read.mark()
     var i = 0
     ;(function next() {
@@ -84,7 +75,6 @@ function or () {
         }
         done()
       })
-
     })()
   }
 }
@@ -94,13 +84,9 @@ function or () {
 
 function star (matcher) {
   return function (read, done) {
-    console.log('star', read)
-
     ;(function next() {
       var revert = read.mark()      
-      console.log('STAR', matcher)
       match(matcher, read, function (err) {
-        console.error(err, '<<<')
        if(err)
           return revert(), done()
         next()
