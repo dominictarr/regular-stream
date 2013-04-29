@@ -1,19 +1,28 @@
 # regular-stream
 
-streaming parser for regular languages
+streaming acceptor for regular languages
 
 [http://en.wikipedia.org/wiki/Regular_language]
 
+WORK IN PROGRESS
 
-cat(A, B, star(C)) //ABCCCCCCCC
+``` js
+var r = require('regular-stream')
+  , and = r.and, start = r.star, plus = r.plus
+  , or = r.or, r.maybe = r.maybe, empty = r.empty
 
-cat(A, star(A)) //A | AAAAAA
+and('A', 'B', star('C')) //ABCCCCCCCC
+
+and('A', star('A'))      //A | AAAAAA
+
+plus('A')               //same as ^
 
 star(or(A, B)) //ABBABABABBABABABBBABAA
 
-cat(A, maybe(B), C) //ABC | AC
+and(A, or(B, empty()), C) //AB?C
 
-
+and(A, maybe(B), C) //ABC | AC
+```
 ## License
 
 MIT
