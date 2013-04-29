@@ -1,4 +1,3 @@
-
 var r = require('../')
 var values = require('pull-stream').values
 var union = r.union
@@ -7,6 +6,8 @@ var cat   = r.cat
 var star  = r.star
 var plus  = r.plus
 var markable = require('../utils').markable
+
+var aSTAR = star('a')
 
 var tape = require('tap').test
 
@@ -19,30 +20,6 @@ function test(rule, seq, desc, pass) {
     })
   })
 }
-/**/
-
-var aORb = union('a', 'b')
-
-test(aORb, ['a'], 'a|b', true)
-test(aORb, ['b'], 'a|b', true)
-test(aORb, ['c'], 'a|b', false)
-
-var aORbORc = union('a', 'b', 'c')
-var aORbORend = union('a', 'b', end())
-
-test(aORbORc, ['c'], 'a|b|c', true)
-test(aORbORend, [], 'a|b|$', true)
-test(aORbORc, [], 'a|b|c', false)
-
-var aORbTHENc = cat(union('a', 'b'), 'c')
-
-test(aORbTHENc, ['a', 'c'], 'a|b,c', true)
-test(aORbTHENc, ['b', 'c'], 'a|b,c', true)
-test(aORbTHENc, ['b', 'b'], 'a|b,c', false)
-test(aORbTHENc, ['a', 'b'], 'a|b,c', false)
-test(aORbTHENc, ['c', 'a'], 'a|b,c', false)
-
-var aSTAR = star('a')
 
 test(aSTAR, ['a', 'a', 'a'], 'a*', true)
 test(aSTAR, ['a'], 'a*', true)
