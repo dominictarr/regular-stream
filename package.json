@@ -1,7 +1,7 @@
 {
   "name": "regular-stream",
-  "description": "",
-  "version": "0.0.0",
+  "description": "streaming regular parser",
+  "version": "1.0.0",
   "homepage": "https://github.com/dominictarr/regular-stream",
   "repository": {
     "type": "git",
