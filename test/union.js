@@ -1,24 +1,13 @@
 
 var r = require('../')
-var values = require('pull-stream').values
 var union = r.union
 var end   = r.end
 var cat   = r.cat
 var star  = r.star
 var plus  = r.plus
-var markable = require('../utils').markable
+var markable = require('pull-markable')
 
-var tape = require('tap').test
-
-function test(rule, seq, desc, pass) {
-  tape('or:'+(pass?'+':'-') + JSON.stringify(seq) +": "+ desc, function (t) {
-    rule(values(seq).pipe(markable()), function (err) {
-      if(pass) t.notOk(err)
-      else     t.ok(err)
-      t.end()
-    })
-  })
-}
+var test = require('./util')
 /**/
 
 var aORb = union('a', 'b')

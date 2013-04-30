@@ -5,11 +5,12 @@ exports.or  = or
 exports.union = or
 exports.star  = star
 exports.plus  = plus
-
-var u = require('./utils')
-buffer = u.buffer
-markable = u.markable
-//exports._buffer = buffer
+exports.maybe = maybe
+exports.empty = empty
+/*
+reg(star(DATA, maybe(plus(PAUSE), DRAIN)), or(END, ERROR))
+//way nicer with implicit `and`.
+*/
 
 function match (matcher, read, done) {
   if('function' === typeof matcher) {
@@ -85,6 +86,8 @@ function or () {
 //don't consume the unmatching 
 
 function star (matcher) {
+  if(arguments.length > 1)
+    matcher = cat.apply(null, arguments)
   return function (read, done) {
     ;(function next() {
       var revert = read.mark()      
@@ -99,6 +102,8 @@ function star (matcher) {
 
 //match one or more things.
 function plus(matcher) {
+  if(arguments.length > 1)
+    matcher = cat.apply(null, arguments)
   return cat(matcher, star(matcher))
 }
 
@@ -111,5 +116,7 @@ function empty () {
 
 //match something or nothing
 function maybe(matcher) {
-  return union(matcher, empty())
+  if(arguments.length > 1)
+    matcher = cat.apply(null, arguments)
+  return or(matcher, empty())
 }

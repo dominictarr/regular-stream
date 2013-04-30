@@ -3,7 +3,6 @@ var r = require('../')
 var values = require('pull-stream').values
 var cat = r.cat
 var end = r.end
-//var buffer = require('../utils').buffer
 
 var tape = require('tap').test
 

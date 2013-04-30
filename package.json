@@ -7,7 +7,9 @@
     "type": "git",
     "url": "git://github.com/dominictarr/regular-stream.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "pull-markable": "1.0.1"
+  },
   "devDependencies": {
     "tape": "~0.3.3",
     "pull-stream": "~2.13"
